@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jemputan Digital - Jabatan Imigresen Malaysia Negeri Sarawak</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Playfair Display untuk rupa editorial yang premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        denim: {
+                            50: '#f0f5fa',
+                            100: '#e1ebf5',
+                            200: '#c8daf0',
+                            300: '#a1c1e6',
+                            400: '#72a0d7',
+                            500: '#4e7fc4',
+                            600: '#3c66ad',
+                            700: '#325295',
+                            800: '#2b447a',
+                            900: '#273b67',
+                            950: '#1a2544',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Skrol bar tersuai mengikut tema warna denim */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f0f5fa;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3c66ad;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2b447a;
+        }
+        
+        /* Gambar latar belakang denim skrin utama dengan lapisan kontras tinggi untuk keterbacaan teks */
+        .hero-denim-bg {
+            background-image: linear-gradient(to bottom, rgba(26, 37, 68, 0.88), rgba(26, 37, 68, 0.92)), url('https://ik.imagekit.io/487xv3vag/istockphoto-2191293110-612x612.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Gambar latar belakang Bahagian 2 menggunakan URL kustom v2 yang baharu */
+        .section2-bg {
+            background-image: url('https://ik.imagekit.io/487xv3vag/bagian%202%20v2.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Gambar latar belakang kaki kad (footer) dengan opasitas sangat rendah supaya tekstur denim nampak jelas sepenuhnya */
+        .footer-denim-bg {
+            background-image: url('https://ik.imagekit.io/487xv3vag/images%20(2).jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Latar belakang butiran halus opsional untuk simulasi tekstur kanvas denim pada bahagian dalam */
+        .denim-grain {
+            background-image: radial-gradient(rgba(26, 37, 68, 0.1) 1px, transparent 0), radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0);
+            background-size: 8px 8px;
+            background-position: 0 0, 4px 4px;
+        }
+
+        /* Gaya Animasi Halaman Pengenalan (Intro Gate Page) */
+        .intro-flap {
+            transition: transform 1.4s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .intro-flap-left-open {
+            transform: translateX(-100%);
+        }
+        .intro-flap-right-open {
+            transform: translateX(100%);
+        }
+        .intro-fade {
+            transition: opacity 1.1s cubic-bezier(0.77, 0, 0.175, 1), transform 1.1s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .intro-fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .intro-scale-out {
+            transform: scale(0.65);
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-denim-300 selection:text-denim-950 overflow-hidden">
+
+    <!-- HALAMAN PENGENALAN INTERAKTIF (INTRO SPLASH GATE) -->
+    <div id="introPage" class="fixed inset-y-0 inset-x-0 max-w-md mx-auto z-[100] overflow-hidden flex items-center justify-center bg-slate-900 shadow-2xl">
+        
+        <!-- Lapisan Tengah (Latar Belakang Denim Tengah yang akan pudar) -->
+        <div id="introMiddle" class="absolute inset-0 bg-cover bg-center intro-fade" style="background-image: url('https://ik.imagekit.io/487xv3vag/MIDDLE%20DENIM.png');"></div>
+        
+        <!-- Panel Denim Sebelah Kiri (Bersaiz penuh untuk ketepatan visual) -->
+        <div id="introLeft" class="absolute inset-0 bg-cover bg-center intro-flap" style="background-image: url('https://ik.imagekit.io/487xv3vag/LEFT%20DENIM.png');"></div>
+        
+        <!-- Panel Denim Sebelah Kanan (Bersaiz penuh untuk ketepatan visual) -->
+        <div id="introRight" class="absolute inset-0 bg-cover bg-center intro-flap" style="background-image: url('https://ik.imagekit.io/487xv3vag/RIGHT%20DENIM.png');"></div>
+        
+        <!-- Kandungan Utama Di Tengah (Logo dan Arahan Sentuhan) -->
+        <div id="introContent" class="absolute z-10 flex flex-col items-center justify-center text-center px-6 intro-fade">
+            <!-- Butang Interaktif Logo JIM (Layer 2) -->
+            <button onclick="unlockInvitation()" class="group relative focus:outline-none focus:ring-4 focus:ring-amber-500/50 rounded-full p-3 transition-all duration-300 active:scale-90">
+                <!-- Efek gelombang cahaya berdenyut di belakang logo -->
+                <span class="absolute inset-2 rounded-full bg-amber-400/30 animate-ping opacity-75"></span>
+                <span class="absolute -inset-1 rounded-full bg-amber-400/20 animate-pulse"></span>
+                <img src="https://ik.imagekit.io/487xv3vag/Layer%202.png" alt="Logo Jabatan Imigresen Malaysia" class="relative h-32 w-auto object-contain filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.65)] transition-transform duration-500 group-hover:scale-110">
+            </button>
+            <div class="mt-8 space-y-1">
+                <p class="text-xs uppercase tracking-[0.35em] text-white font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] animate-pulse">Sila Sentuh Logo</p>
+                <p class="text-[10px] uppercase tracking-[0.2em] text-amber-300 font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">Untuk Membuka Jemputan</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PEMUTAR AUDIO (Terapung di bahagian kanan bawah) -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button id="musicToggleBtn" onclick="toggleMusic()" class="bg-white/80 hover:bg-white text-denim-800 hover:text-denim-600 backdrop-blur-md p-4 rounded-full shadow-2xl transition-all duration-300 border border-denim-200 flex items-center justify-center group focus:outline-none focus:ring-4 focus:ring-denim-300">
+            <!-- Animasi Equalizer (Semasa Memainkan Muzik) -->
+            <div id="eqIcon" class="hidden flex items-end justify-center space-x-1 w-6 h-6 mr-2">
+                <span class="w-1 bg-denim-600 animate-[bounce_1s_infinite_100ms]" style="height: 60%"></span>
+                <span class="w-1 bg-denim-600 animate-[bounce_1s_infinite_300ms]" style="height: 100%"></span>
+                <span class="w-1 bg-denim-600 animate-[bounce_1s_infinite_200ms]" style="height: 40%"></span>
+                <span class="w-1 bg-denim-600 animate-[bounce_1s_infinite_400ms]" style="height: 80%"></span>
+            </div>
+            <!-- Ikon Main/Play (Semasa Berhenti/Senyap) -->
+            <svg id="playIcon" class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l-3.197-2.132a1 1 0 000-1.664z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-sm font-semibold tracking-wider uppercase pr-1" id="musicStatusText">Muzik Latar</span>
+        </button>
+        <!-- Audio latar belakang bebas royalti yang sesuai untuk majlis gala/apresiasi formal -->
+        <audio id="bgMusic" loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- WADAH UTAMA (Lebar maksimum untuk paparan telefon pintar dan web yang premium) -->
+    <div class="max-w-md mx-auto bg-white min-h-screen shadow-2xl relative border-x border-slate-100 flex flex-col justify-between">
+        
+        <!-- BAGIAN 1: SKRIN UTAMA / HERO (Latar belakang gambar denim hadapan dengan logo rasmi) -->
+        <header class="relative min-h-[95vh] flex flex-col justify-between text-center overflow-hidden hero-denim-bg text-white px-6 py-12">
+            <!-- Garis tepi elegan dengan warna keemasan untuk menyamai jahitan denim -->
+            <div class="absolute inset-4 border border-amber-500/20 rounded-2xl pointer-events-none z-0"></div>
+            <!-- Efek cahaya ambient -->
+            <div class="absolute -top-12 -left-12 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+            <div class="absolute -top-6 -right-6 w-24 h-24 bg-denim-400/20 rounded-full blur-xl"></div>
+            
+            <div class="z-10 mt-6 flex flex-col items-center">
+                <!-- Logo Rasmi JIM Sarawak di bahagian atas -->
+                <div class="mb-4">
+                    <img src="https://ik.imagekit.io/487xv3vag/Layer%202.png" alt="Logo Jabatan Imigresen Malaysia" class="h-20 w-auto object-contain filter drop-shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
+                </div>
+                
+                <p class="text-xs uppercase tracking-[0.25em] text-denim-200 font-semibold mb-2">Majlis Apresiasi & Sanjungan Budi</p>
+                <div class="h-[1px] w-12 bg-amber-500/40 mx-auto my-3"></div>
+                <h1 class="font-serif text-3xl md:text-4xl font-semibold tracking-wide leading-relaxed text-white mt-4 px-2">
+                    Malam Indigo <br><span class="italic font-light text-denim-100">& Sebutir Bintang</span>
+                </h1>
+            </div>
+
+            <!-- Stempel Penganjur -->
+            <div class="z-10 my-6 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 mx-2 shadow-lg">
+                <p class="text-xs text-denim-200 uppercase tracking-widest mb-1">Anjuran Bersama</p>
+                <p class="text-base font-bold tracking-wide text-white leading-snug">
+                    Jabatan Imigresen Malaysia <br>Negeri Sarawak
+                </p>
+            </div>
+
+            <!-- Perincian Sasaran Jemputan & Tema -->
+            <div class="z-10 mb-8 space-y-4">
+                <div class="inline-block px-4 py-1.5 bg-white text-denim-950 text-xs uppercase tracking-widest font-bold rounded-full shadow-md border-b-2 border-amber-500">
+                    Tema: Denim & Putih
+                </div>
+                <p class="text-xs text-denim-200/90 italic px-6">
+                    "Gandingan klasik denim yang santai bersulamkan kesucian warna putih, melambangkan keharmonian & dedikasi utuh warga JIM Sarawak."
+                </p>
+                
+                <!-- KAUNTER DETIK (COUNTDOWN TIMER) -->
+                <div class="pt-6">
+                    <p class="text-[10px] uppercase tracking-[0.2em] text-denim-300 mb-3">Menghitung Detik Pertemuan</p>
+                    <div class="grid grid-cols-4 gap-2 px-4" id="countdown">
+                        <div class="bg-white/5 backdrop-blur-sm rounded-lg p-2.5 border border-white/10">
+                            <span id="days" class="block text-xl font-bold text-white">00</span>
+                            <span class="text-[9px] uppercase tracking-wider text-denim-300">Hari</span>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-sm rounded-lg p-2.5 border border-white/10">
+                            <span id="hours" class="block text-xl font-bold text-white">00</span>
+                            <span class="text-[9px] uppercase tracking-wider text-denim-300">Jam</span>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-sm rounded-lg p-2.5 border border-white/10">
+                            <span id="minutes" class="block text-xl font-bold text-white">00</span>
+                            <span class="text-[9px] uppercase tracking-wider text-denim-300">Minit</span>
+                        </div>
+                        <div class="bg-white/5 backdrop-blur-sm rounded-lg p-2.5 border border-white/10">
+                            <span id="seconds" class="block text-xl font-bold text-white">00</span>
+                            <span class="text-[9px] uppercase tracking-wider text-denim-300">Saat</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indikator Skrol -->
+            <div class="z-10 flex flex-col items-center animate-bounce">
+                <span class="text-[10px] uppercase tracking-[0.3em] text-denim-300 mb-2">Skrol Ke Bawah</span>
+                <svg class="w-5 h-5 text-denim-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+            </div>
+        </header>
+
+        <!-- BAGIAN 2: SAMBUTAN & ATUR CARA MAJLIS (Menggunakan Latar Belakang Kustom v2) -->
+        <section class="py-16 px-8 section2-bg text-center relative overflow-hidden">
+            <!-- Lapisan pudar kabur halus bagi keselarasan estetik -->
+            <div class="absolute inset-0 bg-slate-950/15 pointer-events-none"></div>
+            
+            <!-- Kotak Lut Sinar 50% (Glassmorphism) yang mendedahkan fabrik denim di belakangnya -->
+            <div class="relative z-10 bg-white/50 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-white/20">
+                <div class="mb-6">
+                    <span class="text-xs uppercase tracking-widest text-denim-950 font-bold block mb-3">Kata Alu-Aluan</span>
+                    <h2 class="font-serif text-2xl font-semibold text-denim-950 mb-6">Dengan Segala Hormatnya</h2>
+                    <p class="text-slate-900 leading-relaxed text-sm mb-6 font-medium">
+                        Kami di pihak pengurusan <strong class="text-denim-950 font-bold">Jabatan Imigresen Malaysia Negeri Sarawak</strong> menjemput YBhg. Datuk/Dato’/Tuan/Puan/Encik/Cik untuk hadir ke Majlis Apresiasi Tahunan yang bertemakan keanggunan kasual denim dan putih.
+                    </p>
+                    <p class="text-slate-800 leading-relaxed text-sm italic font-semibold">
+                        "Kehadiran dan sokongan anda amat bermakna bagi kami dalam meraikan setiap dedikasi, keringat, dan kejayaan berpasukan sepanjang tahun yang gemilang."
+                    </p>
+                </div>
+
+                <hr class="border-t border-denim-900/20 my-8">
+
+                <!-- BUTIRAN MAJLIS -->
+                <div class="space-y-4 text-left">
+                    <span class="text-xs uppercase tracking-widest text-denim-950 font-bold block text-center mb-4">Butiran Majlis</span>
+                    
+                    <!-- Tarikh -->
+                    <div class="flex items-start p-4 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/40 transition-all hover:shadow-md">
+                        <div class="p-3 bg-denim-50 text-denim-700 rounded-xl mr-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-xs uppercase tracking-wider text-slate-500 font-bold">Tarikh</h4>
+                            <p class="text-slate-950 font-bold text-sm">Sabtu, 28 November 2026</p>
+                            <p class="text-xs text-slate-700 font-medium">10 Jamadilawal 1448H</p>
+                        </div>
+                    </div>
+
+                    <!-- Masa -->
+                    <div class="flex items-start p-4 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/40 transition-all hover:shadow-md">
+                        <div class="p-3 bg-denim-50 text-denim-700 rounded-xl mr-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-xs uppercase tracking-wider text-slate-500 font-bold">Masa</h4>
+                            <p class="text-slate-950 font-bold text-sm">7:30 Malam – 11:00 Malam</p>
+                            <p class="text-xs text-slate-700 font-medium">Pendaftaran & Jamuan bermula jam 7.00 Malam</p>
+                        </div>
+                    </div>
+
+                    <!-- Tempat -->
+                    <div class="flex items-start p-4 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/40 transition-all hover:shadow-md">
+                        <div class="p-3 bg-denim-50 text-denim-700 rounded-xl mr-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-xs uppercase tracking-wider text-slate-500 font-bold">Tempat</h4>
+                            <p class="text-slate-950 font-bold text-sm leading-snug">Grand Ballroom, Imperial Hotel Kuching</p>
+                            <p class="text-xs text-slate-700 font-medium leading-relaxed">Jalan Datuk Tawi Sli, 93250 Kuching, Sarawak</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BAGIAN 3: INTEGRASI PETA NAVIGASI & KALENDAR -->
+        <section class="py-12 px-6 bg-denim-950 text-white relative">
+            <div class="absolute inset-0 bg-gradient-to-tr from-denim-900 to-denim-950 opacity-90 z-0"></div>
+            
+            <div class="relative z-10 text-center space-y-8">
+                <div>
+                    <span class="text-xs uppercase tracking-[0.2em] text-denim-300 font-semibold block mb-2">Navigasi & Perancangan</span>
+                    <h3 class="font-serif text-xl font-bold">Mudahkan Perjalanan Anda</h3>
+                    <p class="text-xs text-denim-200 mt-2 px-6">Gunakan aplikasi navigasi pilihan anda atau simpan tarikh majlis terus ke dalam kalendar peribadi.</p>
+                </div>
+
+                <!-- Butang Navigasi Peta -->
+                <div class="grid grid-cols-2 gap-3 max-w-sm mx-auto">
+                    <a href="https://maps.app.goo.gl/vY2mMyK4uA1SHeK48" target="_blank" class="flex items-center justify-center space-x-2 py-3.5 px-4 bg-white hover:bg-slate-100 text-denim-950 font-bold rounded-xl transition-all duration-300 shadow-lg active:scale-95 text-xs">
+                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                        <span>Google Maps</span>
+                    </a>
+                    
+                    <a href="https://waze.com/ul?ll=1.517300,110.334500&navigate=yes" target="_blank" class="flex items-center justify-center space-x-2 py-3.5 px-4 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-all duration-300 shadow-lg active:scale-95 text-xs">
+                        <svg class="w-5 h-5 fill-white" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zm3.5-3.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                        </svg>
+                        <span>Navigasi Waze</span>
+                    </a>
+                </div>
+
+                <!-- Butang Simpan Kalendar -->
+                <div class="pt-2">
+                    <button onclick="addToCalendar()" class="inline-flex items-center space-x-2 py-3 px-6 bg-white/10 hover:bg-white/20 text-white font-medium rounded-full border border-white/20 transition-all duration-300 text-xs tracking-wider uppercase active:scale-95">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        <span>Simpan Ke Google Calendar</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- BAGIAN 4: RSVP DIGITAL -->
+        <section class="py-16 px-8 bg-slate-50 relative">
+            <div class="text-center mb-10">
+                <span class="text-xs uppercase tracking-widest text-denim-600 font-bold block mb-2">Pengesahan Kehadiran</span>
+                <h3 class="font-serif text-2xl font-bold text-slate-900">Borang RSVP Digital</h3>
+                <p class="text-xs text-slate-500 mt-2">Mohon sahkan kehadiran anda selewat-lewatnya pada <span class="font-bold text-denim-700">14 November 2026</span> untuk memudahkan urusan penyediaan meja dan katering.</p>
+            </div>
+
+            <!-- Kad Borang RSVP -->
+            <form id="rsvpForm" onsubmit="submitRSVP(event)" class="bg-white p-6 rounded-2xl shadow-xl border border-slate-100 space-y-5">
+                
+                <!-- Nama Tetamu -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2" for="guestName">Nama Penuh</label>
+                    <input type="text" id="guestName" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-denim-500 focus:bg-white transition-all" placeholder="Masukkan nama penuh anda">
+                </div>
+
+                <!-- Status Kehadiran -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Status Kehadiran</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="relative flex items-center justify-center p-3.5 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer text-sm font-semibold text-slate-700 transition-all hover:bg-slate-100 has-[:checked]:border-denim-600 has-[:checked]:bg-denim-50 has-[:checked]:text-denim-900">
+                            <input type="radio" name="attendance" value="hadir" checked class="sr-only" onchange="toggleAttendanceFields(this.value)">
+                            <span>Hadir</span>
+                        </label>
+                        <label class="relative flex items-center justify-center p-3.5 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer text-sm font-semibold text-slate-700 transition-all hover:bg-slate-100 has-[:checked]:border-red-400 has-[:checked]:bg-red-50/50 has-[:checked]:text-red-700">
+                            <input type="radio" name="attendance" value="tidak" class="sr-only" onchange="toggleAttendanceFields(this.value)">
+                            <span>Tidak Hadir</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Bahagian Kondisional (Hanya dipaparkan sekiranya hadir) -->
+                <div id="attendingDetails" class="space-y-5 transition-all duration-300">
+                    <!-- Bilangan Pax -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2" for="guestPax">Jumlah Kehadiran (Pax)</label>
+                        <select id="guestPax" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-denim-500 focus:bg-white transition-all">
+                            <option value="1">1 Orang (Diri Sendiri)</option>
+                            <option value="2">2 Orang (Membawa Pasangan)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-4 bg-denim-600 hover:bg-denim-700 text-white font-bold rounded-xl shadow-lg transition-all duration-300 active:scale-[0.98] text-sm tracking-wider uppercase">
+                    Hantar Pengesahan
+                </button>
+            </form>
+        </section>
+
+        <!-- BAGIAN 5: BUKU TAMU DIGITAL / RUANGAN UCAPAN (Latar Belakang Indigo Malam + Efek Partikel Kanvas) -->
+        <section class="py-16 px-8 bg-gradient-to-b from-slate-900 via-denim-950 to-slate-950 text-white relative border-t border-white/10 overflow-hidden">
+            <!-- Canvas untuk Efek Partikel Bintang Berkilauan -->
+            <canvas id="particlesCanvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
+            
+            <div class="relative z-10 text-center mb-10">
+                <span class="text-xs uppercase tracking-widest text-amber-400 font-bold block mb-2">Buku Catatan Tetamu</span>
+                <h3 class="font-serif text-2xl font-bold text-white">Doa & Ucapan Syabas</h3>
+                <p class="text-xs text-denim-200 mt-2">Sematkan kata-kata indah, nasihat, atau ucapan tahniah anda untuk dipaparkan secara langsung di galeri ucapan.</p>
+            </div>
+
+            <!-- Borang Kiriman Ucapan (Reka bentuk Glassmorphic Gelap) -->
+            <form id="wishForm" onsubmit="addWish(event)" class="relative z-10 bg-white/5 backdrop-blur-md p-5 rounded-2xl border border-white/10 mb-8 space-y-4 shadow-xl">
+                <div>
+                    <input type="text" id="wishSender" required class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white text-xs placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white/15 transition-all" placeholder="Nama Anda / Jabatan / Unit">
+                </div>
+                <div>
+                    <textarea id="wishMessage" rows="3" required class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white text-xs placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white/15 transition-all resize-none" placeholder="Tulis ucapan atau titipan doa ikhlas anda di sini..."></textarea>
+                </div>
+                <button type="submit" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl transition-all duration-300 active:scale-95 text-xs tracking-wider uppercase flex items-center justify-center space-x-2 shadow-lg">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                    </svg>
+                    <span>Kirim Ucapan</span>
+                </button>
+            </form>
+
+            <!-- Paparan Senarai Ucapan -->
+            <div class="relative z-10">
+                <p class="text-[11px] uppercase tracking-wider text-denim-300 font-semibold mb-4">Daftar Ucapan Tamu (<span id="wishCount">0</span>)</p>
+                <div id="wishesContainer" class="space-y-4 max-h-[350px] overflow-y-auto pr-2">
+                    <!-- Ucapan akan ditambah secara dinamik di sini -->
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER: PENUTUP (Reka Bentuk Lut Sinar Premium Dengan Logo Rasmi JIM) -->
+        <footer class="p-6 footer-denim-bg text-white text-center border-t border-white/10 relative overflow-hidden">
+            <!-- Overlay super telus supaya tekstur denim di bawah kelihatan sangat jelas -->
+            <div class="absolute inset-0 bg-slate-900/25 pointer-events-none"></div>
+            
+            <!-- Kad Lut Sinar Sepenuhnya (Glassmorphic Card) supaya tekstur kain denim nampak jelas di belakang teks -->
+            <div class="relative z-10 bg-slate-950/30 backdrop-blur-[3px] p-8 rounded-2xl border border-white/10 shadow-2xl space-y-6">
+                <!-- Logo Rasmi JIM Sarawak di Kaki Kad -->
+                <div class="mb-4">
+                    <img src="https://ik.imagekit.io/487xv3vag/Layer%202.png" alt="Logo Jabatan Imigresen Malaysia" class="h-16 w-auto mx-auto object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">
+                </div>
+                
+                <div class="space-y-2">
+                    <p class="text-xs text-slate-300 leading-relaxed">Setinggi-tinggi penghargaan dan terima kasih diucapkan kepada semua pihak yang terlibat dalam menjayakan majlis ini.</p>
+                    <p class="text-[11px] text-denim-300 tracking-widest uppercase pt-2">#WargaImigresenSarawak #DenimAndWhite</p>
+                </div>
+                
+                <hr class="border-t border-white/10 w-1/2 mx-auto">
+                <p class="text-[10px] text-slate-400 leading-relaxed">Hak Cipta Terpelihara &copy; 2026 Jabatan Imigresen Malaysia Negeri Sarawak.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- MODAL NOTIFIKASI KUSTOM UNTUK MENGGANTIKAN ALERT() -->
+    <div id="notificationModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-slate-100 text-center space-y-4 transform scale-90 opacity-0 transition-all duration-300" id="modalCard">
+            <!-- Ikon Status Dinamik -->
+            <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full mx-auto flex items-center justify-center border border-emerald-100">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <div class="space-y-2">
+                <h4 class="font-serif text-xl font-bold text-slate-900" id="modalTitle">Berjaya!</h4>
+                <p class="text-xs text-slate-500 leading-relaxed" id="modalMessage">Pengesahan kehadiran RSVP anda telah berjaya disimpan.</p>
+            </div>
+            <button onclick="closeModal()" class="w-full py-3 bg-denim-600 hover:bg-denim-700 text-white font-bold rounded-xl shadow-lg transition-all duration-300 text-xs tracking-wider uppercase">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT UNTUK INTERAKSI DINAMIK -->
+    <script>
+        // Sila masukkan URL Google Web App Script / Database API anda di sini sekiranya mahu menyimpan progress secara kekal.
+        // Buat masa ini, semua progress disimpan dalam storan ingatan pelayar (In-Memory Array & LocalStorage) untuk kemudahan hospes GitHub Pages.
+        const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycby0Yz73Qs-heAsLuhad_wBvXD4cP3n5wpxkX6ga4yt0lk2rr00lMe1uZWaqwBaQfGYv/exec"; 
+
+        // Kaunter detik dinamik ke tarikh hadapan (30 hari dari tarikh semasa)
+        const targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + 30); 
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Kawalan pemutar muzik latar belakang
+        const bgMusic = document.getElementById("bgMusic");
+        const musicToggleBtn = document.getElementById("musicToggleBtn");
+        const eqIcon = document.getElementById("eqIcon");
+        const playIcon = document.getElementById("playIcon");
+        const musicStatusText = document.getElementById("musicStatusText");
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                bgMusic.pause();
+                eqIcon.classList.add("hidden");
+                playIcon.classList.remove("hidden");
+                musicStatusText.innerText = "Musik Latar";
+                isPlaying = false;
+            } else {
+                bgMusic.play().then(() => {
+                    eqIcon.classList.remove("hidden");
+                    eqIcon.style.display = "flex";
+                    playIcon.classList.add("hidden");
+                    musicStatusText.innerText = "Dimainkan";
+                    isPlaying = true;
+                }).catch(error => {
+                    console.log("Pemutaran automatik disekat pelayar: " + error);
+                    showCustomModal("Musik Latar", "Sila klik butang sekali lagi jika audio tidak dimainkan.");
+                });
+            }
+        }
+
+        // Fungsi Pembukaan Halaman Pengenalan (Intro Gate Unlock)
+        function unlockInvitation() {
+            // Mainkan muzik secara automatik menggunakan interaksi/gesture pengguna
+            bgMusic.play().then(() => {
+                eqIcon.classList.remove("hidden");
+                eqIcon.style.display = "flex";
+                playIcon.classList.add("hidden");
+                musicStatusText.innerText = "Dimainkan";
+                isPlaying = true;
+            }).catch(error => {
+                console.log("Autoplay dihalang: " + error);
+            });
+
+            // Mulakan animasi peluncuran panel denim kiri dan kanan
+            document.getElementById("introLeft").classList.add("intro-flap-left-open");
+            document.getElementById("introRight").classList.add("intro-flap-right-open");
+            
+            // Kesan pudar bagi bahagian tengah dan kandungan logo
+            document.getElementById("introMiddle").classList.add("intro-fade-out");
+            document.getElementById("introContent").classList.add("intro-scale-out");
+
+            // Benarkan tatalan (unlock scrolling) pada bahagian badan jemputan utama
+            document.body.classList.remove("overflow-hidden");
+            document.body.classList.add("overflow-x-hidden");
+
+            // Padam elemen introPage sepenuhnya daripada DOM selepas animasi selesai untuk memelihara prestasi peranti
+            setTimeout(() => {
+                document.getElementById("introPage").style.display = "none";
+                // Mulakan simulasi partikel selepas halaman pengenalan ditutup
+                initParticles();
+            }, 1400);
+        }
+
+        // Logika borang pendaftaran RSVP
+        function toggleAttendanceFields(status) {
+            const attendingDetails = document.getElementById("attendingDetails");
+            if (status === "tidak") {
+                attendingDetails.classList.add("opacity-20", "pointer-events-none");
+            } else {
+                attendingDetails.classList.remove("opacity-20", "pointer-events-none");
+            }
+        }
+
+        // Penghantaran maklumat RSVP (Disimpan terus ke Google Sheets jika URL dikonfigurasi)
+        function submitRSVP(event) {
+            event.preventDefault();
+            const name = document.getElementById("guestName").value;
+            const attendance = document.querySelector('input[name="attendance"]:checked').value;
+            const pax = document.getElementById("guestPax").value;
+
+            let successMessage = "";
+            if (attendance === "hadir") {
+                successMessage = `Terima kasih Tuan/Puan ${name}. Kehadiran anda sebanyak ${pax} pax telah berjaya didaftarkan. Jumpa anda di Imperial Hotel Kuching!`;
+            } else {
+                successMessage = `Makluman ketidakhadiran Tuan/Puan ${name} telah berjaya direkodkan. Kami menghargai maklum balas anda. Terima kasih.`;
+            }
+
+            // Jika URL Google Sheet Web App sedia digunakan
+            if (GOOGLE_SHEET_WEBAPP_URL !== "") {
+                const formData = new FormData();
+                formData.append("type", "rsvp");
+                formData.append("name", name);
+                formData.append("attendance", attendance);
+                formData.append("pax", pax);
+
+                fetch(GOOGLE_SHEET_WEBAPP_URL, {
+                    method: "POST",
+                    body: formData,
+                    mode: "no-cors" // Menghalang ralat CORS statik daripada pelayar statik GitHub Pages
+                })
+                .then(() => {
+                    showCustomModal("RSVP Dihantar", successMessage);
+                })
+                .catch(err => {
+                    console.error("Ralat penghantaran Google Sheets:", err);
+                    showCustomModal("RSVP Diterima", successMessage);
+                });
+            } else {
+                // Simpan dalam memori tempatan sebagai sandaran
+                let rsvpLocal = JSON.parse(localStorage.getItem("rsvp_local") || "[]");
+                rsvpLocal.push({ name, attendance, pax, date: new Date().toISOString() });
+                localStorage.setItem("rsvp_local", JSON.stringify(rsvpLocal));
+                showCustomModal("RSVP Diterima", successMessage);
+            }
+
+            document.getElementById("rsvpForm").reset();
+            toggleAttendanceFields("hadir"); // Set semula paparan visual
+        }
+
+        // Integrasi menyimpan tarikh ke Google Calendar
+        function addToCalendar() {
+            const title = encodeURIComponent("Malam Indigo & Sebutir Bintang - JIM Sarawak");
+            const details = encodeURIComponent("Majlis Apresiasi & Sanjungan Budi Warga Jabatan Imigresen Malaysia Negeri Sarawak. Tema pakaian: Denim & White.");
+            const location = encodeURIComponent("Grand Ballroom, Imperial Hotel Kuching, Sarawak");
+            const dates = "20261128T113000Z/20261128T150000Z"; 
+            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
+            window.open(calendarUrl, '_blank');
+        }
+
+        // Paparan tetingkap modal kustom bagi menggantikan alert standard pelayar
+        function showCustomModal(title, message) {
+            const modal = document.getElementById("notificationModal");
+            const card = document.getElementById("modalCard");
+            
+            document.getElementById("modalTitle").innerText = title;
+            document.getElementById("modalMessage").innerText = message;
+            
+            modal.classList.remove("hidden");
+            setTimeout(() => {
+                card.classList.remove("scale-90", "opacity-0");
+                card.classList.add("scale-100", "opacity-100");
+            }, 50);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("notificationModal");
+            const card = document.getElementById("modalCard");
+            
+            card.classList.remove("scale-100", "opacity-100");
+            card.classList.add("scale-90", "opacity-0");
+            setTimeout(() => {
+                modal.classList.add("hidden");
+            }, 250);
+        }
+
+        // Pengurusan rekod ucapan (Memulakan dengan senarai kosong bersandar Google Sheets)
+        let defaultWishes = [];
+
+        function loadWishes() {
+            const container = document.getElementById("wishesContainer");
+            const wishCountElement = document.getElementById("wishCount");
+            
+            // Jika URL Google Sheets telah dikonfigurasikan, muat turun data masa nyata
+            if (GOOGLE_SHEET_WEBAPP_URL !== "") {
+                fetch(GOOGLE_SHEET_WEBAPP_URL + "?type=get_wishes")
+                .then(res => res.json())
+                .then(data => {
+                    defaultWishes = data;
+                    renderWishesUI(container, wishCountElement);
+                })
+                .catch(err => {
+                    console.error("Gagal memuat turun ucapan dari Google Sheets, menggunakan simpanan tempatan:", err);
+                    loadLocalWishes(container, wishCountElement);
+                });
+            } else {
+                loadLocalWishes(container, wishCountElement);
+            }
+        }
+
+        function loadLocalWishes(container, wishCountElement) {
+            defaultWishes = JSON.parse(localStorage.getItem("wishes_local") || "[]");
+            renderWishesUI(container, wishCountElement);
+        }
+
+        function renderWishesUI(container, wishCountElement) {
+            container.innerHTML = "";
+            wishCountElement.innerText = defaultWishes.length;
+
+            if (defaultWishes.length === 0) {
+                container.innerHTML = `<div class="text-center text-xs text-white/40 py-6 italic">Belum ada ucapan lagi. Jadilah yang pertama mengirim ucapan!</div>`;
+                return;
+            }
+
+            // Papar ucapan terbaru di bahagian atas
+            const sortedWishes = [...defaultWishes].reverse();
+            sortedWishes.forEach((wish) => {
+                const wishDiv = document.createElement("div");
+                wishDiv.className = "bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/10 space-y-2 transform transition-all hover:scale-[1.01]";
+                
+                wishDiv.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-xs text-amber-300">${escapeHtml(wish.sender)}</span>
+                        <span class="text-[9px] text-white/40">Terkirim</span>
+                    </div>
+                    <p class="text-xs text-slate-200 leading-relaxed italic">"${escapeHtml(wish.message)}"</p>
+                `;
+                container.appendChild(wishDiv);
+            });
+        }
+
+        function addWish(event) {
+            event.preventDefault();
+            const senderInput = document.getElementById("wishSender");
+            const messageInput = document.getElementById("wishMessage");
+            const sender = senderInput.value;
+            const message = messageInput.value;
+
+            const container = document.getElementById("wishesContainer");
+            const wishCountElement = document.getElementById("wishCount");
+
+            if (GOOGLE_SHEET_WEBAPP_URL !== "") {
+                const formData = new FormData();
+                formData.append("type", "wish");
+                formData.append("sender", sender);
+                formData.append("message", message);
+
+                fetch(GOOGLE_SHEET_WEBAPP_URL, {
+                    method: "POST",
+                    body: formData,
+                    mode: "no-cors"
+                })
+                .then(() => {
+                    // Masukkan ke dalam tontonan antaramuka setempat sementara menunggu kemas kini pelayan Google Sheets
+                    defaultWishes.push({ sender, message });
+                    renderWishesUI(container, wishCountElement);
+                    showCustomModal("Ucapan Dikirim!", "Terima kasih atas ucapan tulus anda. Ia telah berjaya dipaparkan.");
+                })
+                .catch(err => {
+                    console.error("Ralat mengirim ucapan ke Google Sheets:", err);
+                    saveWishLocally(sender, message, container, wishCountElement);
+                });
+            } else {
+                saveWishLocally(sender, message, container, wishCountElement);
+            }
+
+            senderInput.value = "";
+            messageInput.value = "";
+        }
+
+        function saveWishLocally(sender, message, container, wishCountElement) {
+            defaultWishes.push({ sender, message });
+            localStorage.setItem("wishes_local", JSON.stringify(defaultWishes));
+            renderWishesUI(container, wishCountElement);
+            showCustomModal("Ucapan Dikirim!", "Terima kasih atas ucapan tulus anda. Ia telah berjaya disimpan.");
+        }
+
+        // Perlindungan keselamatan bagi menghalang pepijat XSS
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Pengaturcaraan Kesan Partikel Bintang Emas Berkilauan (Canvas Particle Engine)
+        let particleAnimationId;
+        function initParticles() {
+            const canvas = document.getElementById("particlesCanvas");
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+            
+            function resizeCanvas() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+            }
+            
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            class StarParticle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2.2 + 0.3; // Saiz bintang bercahaya
+                    this.speedX = (Math.random() - 0.5) * 0.2; // Bergerak perlahan ke kiri/kanan
+                    this.speedY = -Math.random() * 0.35 - 0.05; // Mengapung perlahan ke atas
+                    this.alpha = Math.random() * 0.6 + 0.2; // Nilai kelegapan rawak
+                    this.decay = Math.random() * 0.004 + 0.001; // Pengurangan kelegapan
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.alpha -= this.decay;
+                    
+                    // Set semula kedudukan zarah jika pudar sepenuhnya atau terkeluar daripada sempadan
+                    if (this.alpha <= 0 || this.y < 0 || this.x < 0 || this.x > canvas.width) {
+                        this.reset();
+                        this.y = canvas.height; // Bermula semula dari bawah
+                    }
+                }
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.alpha;
+                    ctx.fillStyle = "#fbbf24"; // Warna kuning keemasan premium (Amber-400)
+                    ctx.shadowBlur = 6;
+                    ctx.shadowColor = "#fbbf24"; // Efek kilauan bintang kustom
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+
+            const particlesArray = [];
+            const particleCount = 140; // Bilangan partikel optimum bagi mengekalkan kelancaran peranti mudah alih
+
+            for (let i = 0; i < particleCount; i++) {
+                particlesArray.push(new StarParticle());
+            }
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                    particlesArray[i].draw();
+                }
+                particleAnimationId = requestAnimationFrame(animateParticles);
+            }
+            
+            cancelAnimationFrame(particleAnimationId);
+            animateParticles();
+        }
+
+        // Memuat naik senarai ucapan apabila fail dimuatkan sepenuhnya
+        window.onload = function() {
+            loadWishes();
+            // Sekiranya halaman pengenalan tiada atau diuji terus, kita mulakan kesan partikel
+            if (document.getElementById("introPage").style.display === "none") {
+                initParticles();
+            }
+        };
+    </script>
+</body>
+</html>
