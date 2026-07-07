@@ -482,7 +482,7 @@
 
         // Kaunter detik dinamik ke tarikh hadapan (30 hari dari tarikh semasa)
         const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() + 30); 
+        targetDate.setDate(targetDate.getDate() + 8); 
 
         function updateCountdown() {
             const now = new Date().getTime();
@@ -623,8 +623,8 @@
         function addToCalendar() {
             const title = encodeURIComponent("Malam Indigo & Sebutir Bintang - JIM Sarawak");
             const details = encodeURIComponent("Majlis Apresiasi & Sanjungan Budi Warga Jabatan Imigresen Malaysia Negeri Sarawak. Tema pakaian: Denim & White.");
-            const location = encodeURIComponent("Grand Ballroom, Imperial Hotel Kuching, Sarawak");
-            const dates = "20261128T113000Z/20261128T150000Z"; 
+            const location = encodeURIComponent("Theater Hotel Kuching");
+            const dates = "20260714T113000Z/20260714T150000Z"; 
             const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
             window.open(calendarUrl, '_blank');
         }
