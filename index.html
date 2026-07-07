@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ms" class="scroll-smooth">
 <head>
@@ -318,14 +319,14 @@
 
                 <!-- Butang Navigasi Peta -->
                 <div class="grid grid-cols-2 gap-3 max-w-sm mx-auto">
-                    <a href="https://maps.app.goo.gl/m9BsgJEubMDLFW2z7" target="_blank" class="flex items-center justify-center space-x-2 py-3.5 px-4 bg-white hover:bg-slate-100 text-denim-950 font-bold rounded-xl transition-all duration-300 shadow-lg active:scale-95 text-xs">
+                    <a href="https://maps.app.goo.gl/y2cbYNDSwsyunPGY7" target="_blank" class="flex items-center justify-center space-x-2 py-3.5 px-4 bg-white hover:bg-slate-100 text-denim-950 font-bold rounded-xl transition-all duration-300 shadow-lg active:scale-95 text-xs">
                         <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                         </svg>
                         <span>Google Maps</span>
                     </a>
                     
-                    <a href="https://waze.com/ul?ll=1.517300,110.334500&navigate=yes" target="_blank" class="flex items-center justify-center space-x-2 py-3.5 px-4 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-all duration-300 shadow-lg active:scale-95 text-xs">
+                    <a href="https://www.waze.com/en/live-map/directions/my/sarawak/kuching/theatre-hotel-kuching?place=ChIJl_ldUc-n-zERrP-Tq65LCdM" target="_blank" class="flex items-center justify-center space-x-2 py-3.5 px-4 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-xl transition-all duration-300 shadow-lg active:scale-95 text-xs">
                         <svg class="w-5 h-5 fill-white" viewBox="0 0 24 24">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.5c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zm3.5-3.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
                         </svg>
@@ -350,7 +351,7 @@
             <div class="text-center mb-10">
                 <span class="text-xs uppercase tracking-widest text-denim-600 font-bold block mb-2">Pengesahan Kehadiran</span>
                 <h3 class="font-serif text-2xl font-bold text-slate-900">Borang RSVP Digital</h3>
-                <p class="text-xs text-slate-500 mt-2">Mohon sahkan kehadiran anda selewat-lewatnya pada <span class="font-bold text-denim-700">14 November 2026</span> untuk memudahkan urusan penyediaan meja dan katering.</p>
+                <p class="text-xs text-slate-500 mt-2">Mohon sahkan kehadiran anda selewat-lewatnya pada <span class="font-bold text-denim-700">13 Julai 2026</span> untuk memudahkan urusan penyediaan meja dan katering.</p>
             </div>
 
             <!-- Kad Borang RSVP -->
@@ -480,13 +481,17 @@
         // Buat masa ini, semua progress disimpan dalam storan ingatan pelayar (In-Memory Array & LocalStorage) untuk kemudahan hospes GitHub Pages.
         const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycby0Yz73Qs-heAsLuhad_wBvXD4cP3n5wpxkX6ga4yt0lk2rr00lMe1uZWaqwBaQfGYv/exec"; 
 
-        // Kaunter detik dinamik ke tarikh hadapan (30 hari dari tarikh semasa)
-        const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() + 8); 
+        // Kaunter detik ke tarikh majlis sebenar (14 Julai 2026, 7:30 Malam)
+        const targetDate = new Date("July 14, 2026 19:30:00").getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
             const difference = targetDate - now;
+
+            if (difference < 0) {
+                document.getElementById("countdown").innerHTML = "<div class='col-span-4 text-center text-sm font-semibold text-amber-300 bg-white/5 py-2 rounded-lg border border-white/10'>Majlis Sedang Berlangsung!</div>";
+                return;
+            }
 
             const days = Math.floor(difference / (1000 * 60 * 60 * 24));
             const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -582,7 +587,7 @@
 
             let successMessage = "";
             if (attendance === "hadir") {
-                successMessage = `Terima kasih Tuan/Puan ${name}. Kehadiran anda sebanyak ${pax} pax telah berjaya didaftarkan. Jumpa anda di Imperial Hotel Kuching!`;
+                successMessage = `Terima kasih Tuan/Puan ${name}. Kehadiran anda sebanyak ${pax} pax telah berjaya didaftarkan. Jumpa anda di Theater Hotel Kuching!`;
             } else {
                 successMessage = `Makluman ketidakhadiran Tuan/Puan ${name} telah berjaya direkodkan. Kami menghargai maklum balas anda. Terima kasih.`;
             }
@@ -623,7 +628,8 @@
         function addToCalendar() {
             const title = encodeURIComponent("Malam Indigo & Sebutir Bintang - JIM Sarawak");
             const details = encodeURIComponent("Majlis Apresiasi & Sanjungan Budi Warga Jabatan Imigresen Malaysia Negeri Sarawak. Tema pakaian: Denim & White.");
-            const location = encodeURIComponent("Theater Hotel Kuching");
+            const location = encodeURIComponent("Theater Hotel Kuching, Sarawak");
+            // Tarikh majlis: 14 Julai 2026, 7:30 PM - 11:00 PM MYT (UTC+8) -> 11:30 AM - 3:00 PM UTC
             const dates = "20260714T113000Z/20260714T150000Z"; 
             const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
             window.open(calendarUrl, '_blank');
@@ -710,6 +716,7 @@
             });
         }
 
+        // Tambah Ucapan Baru
         function addWish(event) {
             event.preventDefault();
             const senderInput = document.getElementById("wishSender");
