@@ -431,7 +431,6 @@
 
     <!-- SCRIPT -->
     <script>
-        // KONFIGURASI DATA (DIKEMASKINI: BULLET HANYA 5)
         const DEFAULT_CONFIG = {
             sec2: {
                 calligraphy: "Majlis",
@@ -452,7 +451,6 @@
             },
             sec4: {
                 title: "Aturcara Majlis",
-                // SUB-ACARA 9:00 PAGI DIGABUNGKAN MENJADI SUB-ITEMS
                 timeline: [
                     { time: "7:45 AM", title: "Pendaftaran Penerima", desc: "" },
                     { time: "8:00 AM", title: "Ketibaan Dif-Dif Jemputan", desc: "" },
@@ -486,14 +484,13 @@
                 title: "Doa & Ucapan Syabas",
                 subtitle: "Sematkan kata-kata indah, nasihat, atau ucapan tahniah anda untuk dipaparkan secara langsung di galeri ucapan."
             },
-            googleSheetsUrl: "https://script.google.com/macros/s/AKfycbx3YuQ3PMZYx2y3-0U-_avE6Y-VyayV_7m2rbIiV50B8M5J9ofN9eBgPj0kzJdCaG2e/exec"
+            googleSheetsUrl: "https://script.google.com/macros/s/AKfycbx3YuQ3PMZYx2y3-0U-_avE6Y-VyayV_7m2rbIiV50B8M5J9ofN9eBgPj0kzJdCaG2e/exec" // Pastikan URL ini adalah URL Web App anda yang betul
         };
 
         let appConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
-        let wishesList = [
-            { sender: "Unit Penguatkuasaan Kuching", message: "Tahniah dan syabas kepada semua penerima pingat perkhidmatan tahun ini! Terus cemerlang berbakti untuk Sarawak." },
-            { sender: "Bahagian Khidmat Pengurusan", message: "Selamat maju jaya dan setinggi-tinggi penghargaan atas keringat serta dedikasi murni." }
-        ];
+        
+        // DATA DUMMY TELAH DIBUANG (BERMULA KOSONG)
+        let wishesList = []; 
 
         let isAudioPlaying = false;
         const bgAudio = document.getElementById("bgAudio");
@@ -546,12 +543,10 @@
             const timelineContainer = document.getElementById("display_sec4_timeline_container");
             timelineContainer.innerHTML = "";
             
-            // Menggunakan timeline-compact-item kerana kita ada sub-items yang panjang
             appConfig.sec4.timeline.forEach((item) => {
                 const itemDiv = document.createElement("div");
                 itemDiv.className = `relative reveal-item flex items-start group timeline-compact-item`;
                 
-                // Logik untuk sub-items
                 let subItemsHtml = "";
                 if (item.subItems && item.subItems.length > 0) {
                     subItemsHtml = `<ul class="mt-1 space-y-0.5 text-[7.5px] sm:text-[8px] text-slate-300 font-light leading-snug list-disc pl-3">` +
@@ -589,6 +584,7 @@
             listEl.innerHTML = "";
             badgeEl.innerText = wishesList.length;
 
+            // Logik jika tiada ucapan
             if (wishesList.length === 0) {
                 listEl.innerHTML = `<p class="text-center text-[11px] text-slate-500 py-4 italic">Belum ada ucapan lagi. Jadilah yang pertama mengirim ucapan!</p>`;
                 return;
@@ -629,7 +625,6 @@
             const status = document.getElementById("rsvp_status").value;
 
             if (appConfig.googleSheetsUrl.trim() !== "") {
-                // GUNA URLSearchParams UNTUK PENGHANTARAN YANG LEBIH STABIL
                 const formData = new URLSearchParams();
                 formData.append("type", "rsvp");
                 formData.append("name", name);
@@ -657,7 +652,6 @@
             renderWishesList();
 
             if (appConfig.googleSheetsUrl.trim() !== "") {
-                // GUNA URLSearchParams UNTUK PENGHANTARAN YANG LEBIH STABIL
                 const formData = new URLSearchParams();
                 formData.append("type", "wish");
                 formData.append("sender", sender);
@@ -678,14 +672,12 @@
             const title = encodeURIComponent(appConfig.sec2.awardTitle + " - JIM Sarawak");
             const details = encodeURIComponent("Majlis Penganugerahan Pingat Perkhidmatan Jabatan Imigresen Malaysia Negeri Sarawak.");
             const location = encodeURIComponent(appConfig.sec3.venueName + ", " + appConfig.sec3.venueDetail);
-            // DIKEMASKINI: Waktu 9:00 AM MYT (1:00 AM UTC) hingga 1:00 PM MYT (5:00 AM UTC)
             const dates = "20261124T010000Z/20261124T050000Z";
             const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
             window.open(calUrl, '_blank');
         }
 
         function startCountdown() {
-            // DIKEMASKINI: 24 November 2026, 9:00 PAGI (Waktu Malaysia)
             const targetDate = new Date("2026-11-24T09:00:00+08:00").getTime();
 
             const updateTimer = setInterval(() => {
