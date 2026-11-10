@@ -61,6 +61,7 @@
             background-size: cover; background-position: center; background-repeat: no-repeat; opacity: 0.79;
         }
 
+        /* Skrol bar hitam emas */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0d0f12; }
         ::-webkit-scrollbar-thumb { background: #b8831e; border-radius: 3px; }
@@ -115,11 +116,6 @@
         @keyframes nodeGlow {
             from { box-shadow: 0 0 6px #e5c256; }
             to { box-shadow: 0 0 16px #ffea9f, 0 0 22px rgba(229, 194, 86, 0.8); }
-        }
-
-        .gold-accent-bar {
-            background: linear-gradient(to bottom, #d4a42b 0%, #121316 45%, #121316 55%, #f1dc8c 100%);
-            box-shadow: 0 0 10px rgba(212, 164, 43, 0.4);
         }
 
         .fade-out-page {
@@ -380,10 +376,12 @@
             </div>
         </section>
 
-        <!-- SECTION 6 -->
+        <!-- SECTION 6: BUKU CATATAN TETAMU -->
         <section id="section6" class="relative min-h-[95vh] flex flex-col justify-center py-14 px-6 bg-cotton-black border-t border-gold-500/20 overflow-hidden">
             <div class="absolute inset-0 sec6-bg-overlay pointer-events-none z-0"></div>
-            <div class="absolute right-5 bottom-12 w-2 h-44 gold-accent-bar rounded-full pointer-events-none opacity-85 z-10"></div>
+            
+            <!-- JALUR AKSEN KEEMASAN TELAH DIBUANG DARI SINI -->
+
             <div class="relative z-10 max-w-sm mx-auto w-full space-y-6">
                 <div class="gold-thin-border-box p-6 bg-black/75 backdrop-blur-md space-y-5 reveal-item">
                     <div class="text-center space-y-1">
@@ -404,7 +402,8 @@
                             <span class="text-[10px] uppercase tracking-[0.2em] text-gold-300 font-cinzel">Daftar Ucapan Tamu</span>
                             <span id="wishCountBadge" class="text-[10px] bg-gold-500/20 text-gold-300 px-2.5 py-0.5 rounded-full border border-gold-500/30">0</span>
                         </div>
-                        <div id="wishesDisplayList" class="space-y-3 max-h-56 overflow-y-auto pr-1"></div>
+                        <!-- BEKAS SKROL UCAPAN -->
+                        <div id="wishesDisplayList" class="space-y-3 max-h-[220px] overflow-y-auto pr-1"></div>
                     </div>
                 </div>
                 <div class="text-center space-y-2 pt-4 pb-2">
@@ -484,12 +483,10 @@
                 title: "Doa & Ucapan Syabas",
                 subtitle: "Sematkan kata-kata indah, nasihat, atau ucapan tahniah anda untuk dipaparkan secara langsung di galeri ucapan."
             },
-            googleSheetsUrl: "https://script.google.com/macros/s/AKfycbx3YuQ3PMZYx2y3-0U-_avE6Y-VyayV_7m2rbIiV50B8M5J9ofN9eBgPj0kzJdCaG2e/exec" // Pastikan URL ini adalah URL Web App anda yang betul
+            googleSheetsUrl: "https://script.google.com/macros/s/AKfycbx3YuQ3PMZYx2y3-0U-_avE6Y-VyayV_7m2rbIiV50B8M5J9ofN9eBgPj0kzJdCaG2e/exec" 
         };
 
         let appConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
-        
-        // DATA DUMMY TELAH DIBUANG (BERMULA KOSONG)
         let wishesList = []; 
 
         let isAudioPlaying = false;
@@ -584,7 +581,6 @@
             listEl.innerHTML = "";
             badgeEl.innerText = wishesList.length;
 
-            // Logik jika tiada ucapan
             if (wishesList.length === 0) {
                 listEl.innerHTML = `<p class="text-center text-[11px] text-slate-500 py-4 italic">Belum ada ucapan lagi. Jadilah yang pertama mengirim ucapan!</p>`;
                 return;
@@ -602,6 +598,9 @@
                 `;
                 listEl.appendChild(card);
             });
+
+            // AUTO SCROLL KE ATAS UNTUK LIHAT UCAPAN TERBAHARU
+            listEl.scrollTop = 0;
         }
 
         function selectRSVPStatus(status) {
@@ -649,7 +648,7 @@
             const message = document.getElementById("wish_message").value;
 
             wishesList.push({ sender, message });
-            renderWishesList();
+            renderWishesList(); // Fungsi ini akan trigger autoscroll
 
             if (appConfig.googleSheetsUrl.trim() !== "") {
                 const formData = new URLSearchParams();
