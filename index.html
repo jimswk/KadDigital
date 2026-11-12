@@ -481,7 +481,7 @@
                 title: "Doa & Ucapan Syabas",
                 subtitle: "Sematkan kata-kata indah, nasihat, atau ucapan tahniah anda untuk dipaparkan secara langsung di galeri ucapan."
             },
-            googleSheetsUrl: "https://script.google.com/macros/s/AKfycbzheI7fTxFvULyasqvVHKqEvIDcJHrrHSgvFpsYxqb6g97uaQTd2kE31rPUeDZTeDsjVq/exec" 
+            googleSheetsUrl: "https://script.google.com/macros/s/AKfycbx6pouvsK277bhuV6GxQK4bYDyIaTR82tQiQoPU9gQ1ue0N6rzavGBnDeSEWHxJO2yb/exec" 
         };
 
         let appConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
@@ -601,21 +601,39 @@
             listEl.scrollTop = 0;
         }
 
-                async function fetchWishes() {
-            try {
-                // Tambah parameter masa untuk elakkan cache browser
-                const response = await fetch(appConfig.googleSheetsUrl + "?t=" + new Date().getTime());
-                const data = await response.json();
-                
+        // Fungsi untuk mengambil ucapan menggunakan JSONP (Bypass CORS)
+        function fetchWishes() {
+            // Cipta nama fungsi callback unik
+            const callbackName = 'jsonpCallback_' + Math.round(100000 * Math.random());
+            
+            // Cipta elemen <script> baru
+            const script = document.createElement('script');
+            
+            // Tetapkan fungsi callback global untuk menerima data
+            window[callbackName] = function(data) {
                 if (Array.isArray(data) && !data.error) {
-                    wishesList = data; // Update senarai dengan data dari sheet
+                    wishesList = data;
                     renderWishesList();
                 } else {
                     console.log("Data ucapan kosong atau format salah.");
                 }
-            } catch (error) {
-                console.error("Gagal mengambil ucapan:", error);
-            }
+                // Kemas kini: Buang tag script selepas data diterima
+                document.body.removeChild(script);
+                delete window[callbackName];
+            };
+            
+            // Bina URL dengan parameter callback
+            script.src = appConfig.googleSheetsUrl + '?callback=' + callbackName + '&t=' + new Date().getTime();
+            
+            // Jika ada ralat rangkaian, buang tag script
+            script.onerror = function() {
+                console.error("Gagal mengambil ucapan melalui JSONP.");
+                document.body.removeChild(script);
+                delete window[callbackName];
+            };
+            
+            // Suntik tag script ke dalam body untuk memulakan permintaan
+            document.body.appendChild(script);
         }
 
         function handleWishSubmit(e) {
