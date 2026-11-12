@@ -481,7 +481,7 @@
                 title: "Doa & Ucapan Syabas",
                 subtitle: "Sematkan kata-kata indah, nasihat, atau ucapan tahniah anda untuk dipaparkan secara langsung di galeri ucapan."
             },
-            googleSheetsUrl: "https://script.google.com/macros/s/AKfycbx3YuQ3PMZYx2y3-0U-_avE6Y-VyayV_7m2rbIiV50B8M5J9ofN9eBgPj0kzJdCaG2e/exec" 
+            googleSheetsUrl: "https://script.google.com/macros/s/AKfycbzheI7fTxFvULyasqvVHKqEvIDcJHrrHSgvFpsYxqb6g97uaQTd2kE31rPUeDZTeDsjVq/exec" 
         };
 
         let appConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
@@ -601,6 +601,23 @@
             listEl.scrollTop = 0;
         }
 
+                async function fetchWishes() {
+            try {
+                // Tambah parameter masa untuk elakkan cache browser
+                const response = await fetch(appConfig.googleSheetsUrl + "?t=" + new Date().getTime());
+                const data = await response.json();
+                
+                if (Array.isArray(data) && !data.error) {
+                    wishesList = data; // Update senarai dengan data dari sheet
+                    renderWishesList();
+                } else {
+                    console.log("Data ucapan kosong atau format salah.");
+                }
+            } catch (error) {
+                console.error("Gagal mengambil ucapan:", error);
+            }
+        }
+
         function handleWishSubmit(e) {
             e.preventDefault();
             const sender = document.getElementById("wish_sender").value;
@@ -691,6 +708,7 @@
         window.addEventListener("DOMContentLoaded", () => {
             renderAllText();
             startCountdown();
+            fetchWishes();
         });
     </script>
 </body>
