@@ -481,7 +481,7 @@
                 title: "Doa & Ucapan Syabas",
                 subtitle: "Sematkan kata-kata indah, nasihat, atau ucapan tahniah anda untuk dipaparkan secara langsung di galeri ucapan."
             },
-            googleSheetsUrl: "https://script.google.com/macros/s/AKfycbx6pouvsK277bhuV6GxQK4bYDyIaTR82tQiQoPU9gQ1ue0N6rzavGBnDeSEWHxJO2yb/exec" 
+            googleSheetsUrl: "https://script.google.com/macros/s/AKfycbzSEdQRWpXJrLqNNm8I1nhs1oXz8PNH-CQFCfx3IAZdkr3RBu2E6seu1W_vLofP2eJ0/exec" 
         };
 
         let appConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
@@ -601,39 +601,66 @@
             listEl.scrollTop = 0;
         }
 
-        // Fungsi untuk mengambil ucapan menggunakan JSONP (Bypass CORS)
+        // ==========================================
+        // FUNGSI MENGAMBIL DATA (JSONP)
+        // ==========================================
         function fetchWishes() {
-            // Cipta nama fungsi callback unik
             const callbackName = 'jsonpCallback_' + Math.round(100000 * Math.random());
-            
-            // Cipta elemen <script> baru
             const script = document.createElement('script');
-            
-            // Tetapkan fungsi callback global untuk menerima data
+
             window[callbackName] = function(data) {
-                if (Array.isArray(data) && !data.error) {
+                console.log("Data diterima:", data); // Untuk semakan di Console
+                
+                if (Array.isArray(data) && data.length > 0) {
                     wishesList = data;
-                    renderWishesList();
-                } else {
-                    console.log("Data ucapan kosong atau format salah.");
                 }
-                // Kemas kini: Buang tag script selepas data diterima
+                renderWishesList(); // Panggil fungsi untuk paparkan
+                
+                // Buang tag script selepas data diterima
                 document.body.removeChild(script);
                 delete window[callbackName];
             };
-            
-            // Bina URL dengan parameter callback
+
+            // Tambah ?callback= untuk JSONP, dan &t= untuk elak cache
             script.src = appConfig.googleSheetsUrl + '?callback=' + callbackName + '&t=' + new Date().getTime();
             
-            // Jika ada ralat rangkaian, buang tag script
             script.onerror = function() {
-                console.error("Gagal mengambil ucapan melalui JSONP.");
+                console.error("Ralat mengambil data JSONP.");
                 document.body.removeChild(script);
                 delete window[callbackName];
             };
             
-            // Suntik tag script ke dalam body untuk memulakan permintaan
             document.body.appendChild(script);
+        }
+
+        // ==========================================
+        // FUNGSI MEMAPARKAN DATA KE SKRIN
+        // ==========================================
+        function renderWishesList() {
+            const listEl = document.getElementById("wishesDisplayList");
+            const badgeEl = document.getElementById("wishCountBadge");
+            
+            listEl.innerHTML = "";
+            badgeEl.innerText = wishesList.length;
+
+            if (wishesList.length === 0) {
+                listEl.innerHTML = `<p class="text-center text-[11px] text-slate-500 py-4 italic">Belum ada ucapan lagi. Jadilah yang pertama mengirim ucapan!</p>`;
+                return;
+            }
+
+            // Terbalikkan senarai supaya ucapan terbaru di atas
+            [...wishesList].reverse().forEach(w => {
+                const card = document.createElement("div");
+                card.className = "p-3 rounded-xl bg-neutral-900/80 border border-gold-500/20 space-y-1";
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-gold-300 font-cinzel">${escapeHtml(w.sender)}</span>
+                        <span class="text-[9px] text-slate-500">Terkirim</span>
+                    </div>
+                    <p class="text-[11px] text-slate-200 font-light leading-relaxed">"${escapeHtml(w.message)}"</p>
+                `;
+                listEl.appendChild(card);
+            });
         }
 
         function handleWishSubmit(e) {
