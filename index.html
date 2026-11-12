@@ -341,7 +341,7 @@
                         <div class="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center text-slate-300">
                             <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                         </div>
-                        <a id="display_link_gmaps" href="https://maps.app.goo.gl/fTuLNhExTYefETHF8" target="_blank" class="w-full py-3.5 px-4 gold-card-gradient font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center space-x-2 transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg">
+                        <a id="display_link_gmaps" href="https://maps.app.goo.gl/j254Kj1owHYtQY9V8" target="_blank" class="w-full py-3.5 px-4 gold-card-gradient font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center space-x-2 transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg">
                             <span class="font-extrabold text-black tracking-widest">GOOGLE MAPS</span>
                         </a>
                         <button onclick="addToCalendarAction()" class="w-full py-2.5 px-3 bg-neutral-900/80 hover:bg-neutral-800 text-gold-300 border border-gold-500/40 text-[11px] uppercase tracking-wider font-semibold rounded-lg flex items-center justify-center space-x-2 transition-all">
@@ -350,29 +350,30 @@
                         </button>
                     </div>
                 </div>
-                <div class="gold-thin-border-box p-6 bg-black/70 backdrop-blur-md space-y-4 reveal-item">
+                
+                <!-- RSVP SECTION: GOOGLE FORM EMBED -->
+                <div class="gold-thin-border-box p-4 bg-black/70 backdrop-blur-md space-y-4 reveal-item">
                     <div class="text-center space-y-1">
                         <h4 id="display_sec5_rsvp_title" class="font-serif text-lg font-normal text-white">Pengesahan Kehadiran</h4>
                         <span class="text-[11px] uppercase tracking-[0.2em] text-slate-300 font-cinzel block">Borang RSVP Digital</span>
-                        <p id="display_sec5_rsvp_note" class="text-[11px] text-slate-400 leading-snug pt-1 font-light">Mohon sahkan kehadiran anda selewat-lewatnya pada 20 November 2026 untuk memudahkan urusan penyediaan meja dan katering.</p>
+                        <p id="display_sec5_rsvp_note" class="text-[11px] text-slate-400 leading-snug pt-1 font-light">Sila isi maklumat di bawah untuk pengesahan kehadiran.</p>
                     </div>
-                    <form id="rsvpForm" onsubmit="handleRSVPSubmit(event)" class="space-y-4 pt-2">
-                        <div>
-                            <label class="block text-[11px] uppercase tracking-wider text-slate-300 mb-1.5 font-semibold">Nama Penuh</label>
-                            <input type="text" id="rsvp_name" required placeholder="Nama anda" class="w-full px-4 py-3 bg-neutral-900/90 border border-gold-500/40 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] uppercase tracking-wider text-slate-300 mb-1.5 font-semibold">Bahagian / Unit</label>
-                            <input type="text" id="rsvp_unit" required placeholder="Cth: Bahagian Penguatkuasa" class="w-full px-4 py-3 bg-neutral-900/90 border border-gold-500/40 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all">
-                        </div>
-                        <div class="grid grid-cols-2 gap-3 pt-1">
-                            <button type="button" id="btnHadir" onclick="selectRSVPStatus('HADIR')" class="py-3 px-3 rounded-xl border border-gold-500 gold-card-gradient text-neutral-950 font-bold text-xs uppercase tracking-wider transition-all shadow-md">HADIR</button>
-                            <button type="button" id="btnTidakHadir" onclick="selectRSVPStatus('TIDAK HADIR')" class="py-3 px-3 rounded-xl border border-neutral-700 bg-neutral-900/80 text-slate-400 font-bold text-xs uppercase tracking-wider transition-all hover:bg-neutral-800">TIDAK HADIR</button>
-                        </div>
-                        <input type="hidden" id="rsvp_status" value="HADIR">
-                        <button type="submit" id="rsvpSubmitBtn" class="w-full py-3.5 bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 hover:from-gold-500 hover:to-gold-400 text-neutral-950 font-cinzel font-extrabold text-xs uppercase tracking-[0.2em] rounded-xl shadow-lg transition-all active:scale-[0.98]">Hantar Pengesahan</button>
-                    </form>
+                    <!-- IFRAME GOOGLE FORM -->
+                    <div class="w-full bg-white rounded-lg overflow-hidden">
+                        <iframe 
+                            src="https://docs.google.com/forms/d/e/1FAIpQLSdluy4LYXgPiM4jBg1rP-rsvEQIH-rOPa9WUYcabsDVtTvdVA/viewform?embedded=true" 
+                            width="100%" 
+                            height="800" 
+                            frameborder="0" 
+                            marginheight="0" 
+                            marginwidth="0"
+                            class="w-full"
+                            loading="lazy">
+                            Memuatkan…
+                        </iframe>
+                    </div>
                 </div>
+
             </div>
         </section>
 
@@ -380,8 +381,6 @@
         <section id="section6" class="relative min-h-[95vh] flex flex-col justify-center py-14 px-6 bg-cotton-black border-t border-gold-500/20 overflow-hidden">
             <div class="absolute inset-0 sec6-bg-overlay pointer-events-none z-0"></div>
             
-            <!-- JALUR AKSEN KEEMASAN TELAH DIBUANG DARI SINI -->
-
             <div class="relative z-10 max-w-sm mx-auto w-full space-y-6">
                 <div class="gold-thin-border-box p-6 bg-black/75 backdrop-blur-md space-y-5 reveal-item">
                     <div class="text-center space-y-1">
@@ -402,7 +401,6 @@
                             <span class="text-[10px] uppercase tracking-[0.2em] text-gold-300 font-cinzel">Daftar Ucapan Tamu</span>
                             <span id="wishCountBadge" class="text-[10px] bg-gold-500/20 text-gold-300 px-2.5 py-0.5 rounded-full border border-gold-500/30">0</span>
                         </div>
-                        <!-- BEKAS SKROL UCAPAN -->
                         <div id="wishesDisplayList" class="space-y-3 max-h-[220px] overflow-y-auto pr-1"></div>
                     </div>
                 </div>
@@ -477,7 +475,7 @@
                 navTitle: "Mudahkan Perjalanan Anda",
                 navSubtitle: "Gunakan aplikasi navigasi pilihan anda atau simpan tarikh majlis terus ke dalam kalendar peribadi.",
                 rsvpTitle: "Pengesahan Kehadiran",
-                rsvpNote: "Mohon sahkan kehadiran anda selewat-lewatnya pada 20 November 2026 untuk memudahkan urusan penyediaan meja dan katering."
+                rsvpNote: "Sila isi maklumat di bawah untuk pengesahan kehadiran."
             },
             sec6: {
                 title: "Doa & Ucapan Syabas",
@@ -601,45 +599,6 @@
 
             // AUTO SCROLL KE ATAS UNTUK LIHAT UCAPAN TERBAHARU
             listEl.scrollTop = 0;
-        }
-
-        function selectRSVPStatus(status) {
-            document.getElementById("rsvp_status").value = status;
-            const btnHadir = document.getElementById("btnHadir");
-            const btnTidakHadir = document.getElementById("btnTidakHadir");
-
-            if (status === 'HADIR') {
-                btnHadir.className = "py-3 px-3 rounded-xl border border-gold-500 gold-card-gradient text-neutral-950 font-bold text-xs uppercase tracking-wider transition-all shadow-md";
-                btnTidakHadir.className = "py-3 px-3 rounded-xl border border-neutral-700 bg-neutral-900/80 text-slate-400 font-bold text-xs uppercase tracking-wider transition-all hover:bg-neutral-800";
-            } else {
-                btnTidakHadir.className = "py-3 px-3 rounded-xl border border-rose-500 bg-rose-950/70 text-rose-200 font-bold text-xs uppercase tracking-wider transition-all shadow-md";
-                btnHadir.className = "py-3 px-3 rounded-xl border border-neutral-700 bg-neutral-900/80 text-slate-400 font-bold text-xs uppercase tracking-wider transition-all hover:bg-neutral-800";
-            }
-        }
-
-        function handleRSVPSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById("rsvp_name").value;
-            const unit = document.getElementById("rsvp_unit").value;
-            const status = document.getElementById("rsvp_status").value;
-
-            if (appConfig.googleSheetsUrl.trim() !== "") {
-                const formData = new URLSearchParams();
-                formData.append("type", "rsvp");
-                formData.append("name", name);
-                formData.append("unit", unit);
-                formData.append("attendance", status);
-
-                fetch(appConfig.googleSheetsUrl, {
-                    method: "POST",
-                    mode: "no-cors",
-                    body: formData
-                }).catch(err => console.log("Hantar sheets ralat:", err));
-            }
-
-            showNoticeModal("RSVP Diterima", `Terima kasih ${name}. Pengesahan status [${status}] anda telah berjaya disimpan.`);
-            document.getElementById("rsvpForm").reset();
-            selectRSVPStatus('HADIR');
         }
 
         function handleWishSubmit(e) {
